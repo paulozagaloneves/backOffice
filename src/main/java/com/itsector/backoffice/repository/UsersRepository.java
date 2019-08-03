@@ -3,18 +3,14 @@ package com.itsector.backoffice.repository;
 import com.itsector.backoffice.domain.User;
 import com.itsector.backoffice.usecase.users.gateway.UsersGateway;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class UsersRepository implements UsersGateway {
@@ -46,6 +42,26 @@ public class UsersRepository implements UsersGateway {
         jdbcTemplate.update(sql, getInsertValues(user), keyHolder);
 
         return keyHolder.getKey().intValue();
+    }
+
+    @Override
+    public Integer deleteUser(Integer id) {
+        final String sql = "DELETE FROM TBL_USERS WHERE ID = :id";
+        return jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
+    }
+
+    @Override
+    public Integer updateUser(User user) {
+        final String sql = "UPDATE TBL_USERS SET name = :name, password = :password WHERE ID = :id";
+        return jdbcTemplate.update(sql, generateParams(user));
+    }
+
+    private MapSqlParameterSource generateParams(User user) {
+        final MapSqlParameterSource params = new MapSqlParameterSource("id", user.getId());
+        params.addValue("name", user.getName());
+        params.addValue("password", user.getPassword());
+
+        return params;
     }
 
     private MapSqlParameterSource getInsertValues(User user) {
