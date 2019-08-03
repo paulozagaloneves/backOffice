@@ -1,0 +1,1 @@
+INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp) VALUES (USER_SEQ.nextval, 'admin', 'admin', 'admin', CURRENT_TIMESTAMP);
