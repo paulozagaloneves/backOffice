@@ -2,6 +2,8 @@ package com.itsector.backoffice.usecase.users.impl;
 
 import com.itsector.backoffice.domain.User;
 import com.itsector.backoffice.usecase.users.CreateUser;
+import com.itsector.backoffice.usecase.users.errors.UserAlreadyExistException;
+import com.itsector.backoffice.usecase.users.errors.UserNotFoundException;
 import com.itsector.backoffice.usecase.users.gateway.UsersGateway;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,10 @@ public class CreateUserImpl implements CreateUser {
     }
 
     private User createUserDomain(CreateUserRequest request) {
+
+        usersGateway.getUserByUserName(request.getUserName())
+                .orElseThrow(() -> new UserAlreadyExistException("User name already exist"));
+
         return User.builder()
                 .name(request.getName())
                 .password(request.getPassword())

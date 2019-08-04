@@ -11,6 +11,9 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.itsector.backoffice.repository.RepositoryUtils.optionalResult;
 
 @Repository
 public class UsersRepository implements UsersGateway {
@@ -36,7 +39,8 @@ public class UsersRepository implements UsersGateway {
 
     @Override
     public Integer createUser(User user) {
-        final String sql = "INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp,  update_timestamp) VALUES (USER_SEQ.nextval, :userName, :name, :password, CURRENT_TIMESTAMP, null)";
+
+        final String sql = "INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, update_timestamp) VALUES (USER_SEQ.nextval, :userName, :name, :password, CURRENT_TIMESTAMP, null)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(sql, getInsertValues(user), keyHolder);
@@ -46,14 +50,30 @@ public class UsersRepository implements UsersGateway {
 
     @Override
     public Integer deleteUser(Integer id) {
-        final String sql = "DELETE FROM TBL_USERS WHERE ID = :id";
+        String sql = "DELETE FROM TBL_USERS WHERE ID = :id";
         return jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
     }
 
     @Override
     public Integer updateUser(User user) {
-        final String sql = "UPDATE TBL_USERS SET name = :name, password = :password WHERE ID = :id";
+        final String sql = "UPDATE TBL_USERS SET name = :name, password = :password, update_timestamp = CURRENT_TIMESTAMP WHERE ID = :id";
         return jdbcTemplate.update(sql, generateParams(user));
+    }
+
+    @Override
+    public Optional<User> getUserById(Integer id) {
+        final String sql = "SELECT * FROM TBL_USERS WHERE id = :id";
+
+        return optionalResult(() ->
+                jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("id", id), userRowMapper));
+    }
+
+    @Override
+    public Optional<User> getUserByUserName(String userName) {
+        final String sql = "SELECT * FROM TBL_USERS WHERE user_name = :userName";
+
+        return optionalResult(() ->
+                jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("userName", userName), userRowMapper));
     }
 
     private MapSqlParameterSource generateParams(User user) {

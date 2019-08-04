@@ -1,6 +1,7 @@
 package com.itsector.backoffice.usecase.users.impl;
 
 import com.itsector.backoffice.usecase.users.DeleteUser;
+import com.itsector.backoffice.usecase.users.errors.UserNotFoundException;
 import com.itsector.backoffice.usecase.users.gateway.UsersGateway;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,10 @@ public class DeleteUserImpl implements DeleteUser {
 
     @Override
     public String execute(Integer id) {
-        return usersGateway.deleteUser(id) > 0 ? "Usuario deletado com sucesso" : "Usuario não encontrado";
+        if (usersGateway.deleteUser(id) > 0) {
+            return "user successfully deleted";
+        } else {
+            throw new UserNotFoundException(String.format("user with id %d not found.", id));
+        }
     }
 }
