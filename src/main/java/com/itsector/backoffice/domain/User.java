@@ -15,4 +15,5 @@ public class User {
     private String password;
     private Date createTimestamp;
     private Date updateTimestamp;
+    private String role;
 }

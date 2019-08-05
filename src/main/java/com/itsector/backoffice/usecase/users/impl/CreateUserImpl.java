@@ -25,7 +25,7 @@ public class CreateUserImpl implements CreateUser {
     private User createUserDomain(CreateUserRequest request) {
 
         usersGateway.getUserByUserName(request.getUserName())
-                .orElseThrow(() -> new UserAlreadyExistException("User name already exist"));
+                .ifPresent(user -> {throw new UserAlreadyExistException("User name already exist");});
 
         return User.builder()
                 .name(request.getName())

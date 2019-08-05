@@ -1,1 +1,1 @@
-INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp) VALUES (USER_SEQ.nextval, 'admin', 'admin', 'admin', CURRENT_TIMESTAMP);
+INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp) VALUES (USER_SEQ.nextval, 'admin', 'admin', '$2a$06$tYBYZ8ZXQdW8JHtZ1Kp5pOKGa8LWWTl.jbJ5PL1UZe4tgxDcDwXVW', CURRENT_TIMESTAMP);

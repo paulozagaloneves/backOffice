@@ -2,7 +2,7 @@ package com.itsector.backoffice.usecase.users;
 
 import com.itsector.backoffice.domain.User;
 
-public interface Login {
+public interface GetUserByUserName {
 
-    User execute(String userName, String password);
+    User execute(String userName);
 }

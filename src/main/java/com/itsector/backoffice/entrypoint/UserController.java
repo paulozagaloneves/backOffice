@@ -4,6 +4,7 @@ import com.itsector.backoffice.domain.User;
 import com.itsector.backoffice.entrypoint.vo.UserVo;
 import com.itsector.backoffice.entrypoint.vo.request.CreateUserRequestVo;
 import com.itsector.backoffice.entrypoint.vo.request.UpdateUserRequestVo;
+import com.itsector.backoffice.entrypoint.vo.response.DefaultResponseVo;
 import com.itsector.backoffice.usecase.users.*;
 import com.itsector.backoffice.usecase.users.CreateUser.CreateUserRequest;
 import com.itsector.backoffice.usecase.users.UpdateUser.UpdateUserRequest;
@@ -24,7 +25,8 @@ public class UserController {
     private final UpdateUser updateUser;
     private final GetUserById getUserById;
 
-    public UserController(GetAllUsers getAllUsers, CreateUser createUser, DeleteUser deleteUser, UpdateUser updateUser, GetUserById getUserById) {
+    public UserController(GetAllUsers getAllUsers, CreateUser createUser, DeleteUser deleteUser,
+                          UpdateUser updateUser, GetUserById getUserById) {
         this.getAllUsers = getAllUsers;
         this.createUser = createUser;
         this.deleteUser = deleteUser;
@@ -38,20 +40,20 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<String> crateUser(@RequestBody CreateUserRequestVo request) {
+    public DefaultResponseVo crateUser(@RequestBody CreateUserRequestVo request) {
         Integer id = createUser.execute(getCreateUserRequest(request));
-        return new ResponseEntity<String>(String.format("user with id %d created", id), HttpStatus.OK);
+        return new DefaultResponseVo(HttpStatus.OK.value(), String.format("user with id %d created", id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
-        return new ResponseEntity(deleteUser.execute(id), HttpStatus.OK);
+    public DefaultResponseVo deleteUser(@PathVariable Integer id) {
+        return new DefaultResponseVo(HttpStatus.OK.value(), deleteUser.execute(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable Integer id, @RequestBody UpdateUserRequestVo request) {
+    public DefaultResponseVo updateUser(@PathVariable Integer id, @RequestBody UpdateUserRequestVo request) {
 
-        return new ResponseEntity<String>(updateUser.execute(getUpdateUserRequest(id, request)), HttpStatus.OK);
+        return new DefaultResponseVo(HttpStatus.OK.value(), updateUser.execute(getUpdateUserRequest(id, request)));
     }
 
     @GetMapping("/{id}")

@@ -20,8 +20,8 @@ public class ErrorsHandlers {
         response.sendError(HttpStatus.CONFLICT.value(), e.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
-    public void handleException(final HttpServletResponse response, final Exception e) throws IOException {
-        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
-    }
+//    @ExceptionHandler(Exception.class)
+//    public void handleException(final HttpServletResponse response, final Exception e) throws IOException {
+//        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+//    }
 }

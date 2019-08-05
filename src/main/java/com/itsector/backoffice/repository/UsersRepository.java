@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,8 +23,11 @@ public class UsersRepository implements UsersGateway {
 
     private final RowMapper<User> userRowMapper;
 
-    public UsersRepository(final NamedParameterJdbcTemplate jdbcTemplate) {
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UsersRepository(final NamedParameterJdbcTemplate jdbcTemplate, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jdbcTemplate = jdbcTemplate;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         final JdbcTemplateMapperFactory jdbcTemplateMapperFactory = JdbcTemplateMapperFactory.newInstance()
                 .addAlias("user_name", "userName")
                 .addAlias("create_timestamp", "createTimestamp")
@@ -40,7 +44,7 @@ public class UsersRepository implements UsersGateway {
     @Override
     public Integer createUser(User user) {
 
-        final String sql = "INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, update_timestamp) VALUES (USER_SEQ.nextval, :userName, :name, :password, CURRENT_TIMESTAMP, null)";
+        final String sql = "INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, update_timestamp, role) VALUES (USER_SEQ.nextval, :userName, :name, :password, CURRENT_TIMESTAMP, null, 'ADMIN')";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(sql, getInsertValues(user), keyHolder);
@@ -79,7 +83,7 @@ public class UsersRepository implements UsersGateway {
     private MapSqlParameterSource generateParams(User user) {
         final MapSqlParameterSource params = new MapSqlParameterSource("id", user.getId());
         params.addValue("name", user.getName());
-        params.addValue("password", user.getPassword());
+        params.addValue("password", bCryptPasswordEncoder.encode(user.getPassword()));
 
         return params;
     }
@@ -88,7 +92,7 @@ public class UsersRepository implements UsersGateway {
         MapSqlParameterSource values = new MapSqlParameterSource();
         values.addValue("userName", user.getUserName());
         values.addValue("name", user.getName());
-        values.addValue("password", user.getPassword());
+        values.addValue("password", bCryptPasswordEncoder.encode(user.getPassword()));
 
         return values;
     }
