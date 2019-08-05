@@ -10,17 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class BackOfficeApplication {
 
-	public static final int BCRYPT_STRENGTH = 6;
-
-//	@Bean("dataSource")
-//	public DriverManagerDataSource dataSource() {
-//		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-//		driverManagerDataSource.setDriverClassName("org.h2.Driver");
-//		driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/sample_jwt_db");
-//		driverManagerDataSource.setUsername("root");
-//		driverManagerDataSource.setPassword("123456");
-//		return driverManagerDataSource;
-//	}
+	public static final int BCRYPT_STRENGTH = 5;
 
 	@Bean()
 	public PasswordEncoder passwordEncoder() {
