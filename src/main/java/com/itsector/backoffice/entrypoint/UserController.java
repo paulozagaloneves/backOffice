@@ -65,7 +65,8 @@ public class UserController {
         return CreateUserRequest.builder()
                 .userName(request.getUserName())
                 .name(request.getName())
-                .password(request.getPassword()).build();
+                .password(request.getPassword())
+                .role(request.getRole()).build();
     }
 
     private UpdateUserRequest getUpdateUserRequest(Integer id, UpdateUserRequestVo request){

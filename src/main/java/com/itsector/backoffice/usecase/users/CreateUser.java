@@ -15,5 +15,6 @@ public interface CreateUser {
         private String name;
         private String userName;
         private String password;
+        private String role;
     }
 }

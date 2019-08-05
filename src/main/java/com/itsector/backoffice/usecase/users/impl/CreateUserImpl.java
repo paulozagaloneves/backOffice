@@ -30,7 +30,8 @@ public class CreateUserImpl implements CreateUser {
         return User.builder()
                 .name(request.getName())
                 .password(request.getPassword())
-                .userName(request.getUserName()).build();
+                .userName(request.getUserName())
+                .role(request.getRole()).build();
 
     }
 }

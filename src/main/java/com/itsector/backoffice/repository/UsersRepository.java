@@ -44,7 +44,7 @@ public class UsersRepository implements UsersGateway {
     @Override
     public Integer createUser(User user) {
 
-        final String sql = "INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, update_timestamp, role) VALUES (USER_SEQ.nextval, :userName, :name, :password, CURRENT_TIMESTAMP, null, 'ADMIN')";
+        final String sql = "INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, update_timestamp, role) VALUES (USER_SEQ.nextval, :userName, :name, :password, CURRENT_TIMESTAMP, null, :role)";
         final KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(sql, getInsertValues(user), keyHolder);
@@ -93,6 +93,7 @@ public class UsersRepository implements UsersGateway {
         values.addValue("userName", user.getUserName());
         values.addValue("name", user.getName());
         values.addValue("password", bCryptPasswordEncoder.encode(user.getPassword()));
+        values.addValue("role", user.getRole());
 
         return values;
     }
