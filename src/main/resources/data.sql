@@ -1,1 +1,1 @@
-INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, role) VALUES (USER_SEQ.nextval, 'admin', 'admin', '$2a$06$tYBYZ8ZXQdW8JHtZ1Kp5pOKGa8LWWTl.jbJ5PL1UZe4tgxDcDwXVW', CURRENT_TIMESTAMP, 'ROLE_ADMIN');
+INSERT INTO TBL_USERS (id, user_name, name, password, create_timestamp, role) VALUES (USER_SEQ.nextval, 'admin', 'admin', '$2a$05$F0fZVHMcWW.12Bni9ha8buX5PsLTZZIRoQHYVZCVtUIIb6a1hszqK', CURRENT_TIMESTAMP, 'ROLE_ADMIN');

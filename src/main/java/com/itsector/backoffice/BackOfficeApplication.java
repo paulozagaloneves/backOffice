@@ -3,7 +3,6 @@ package com.itsector.backoffice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -12,10 +11,9 @@ public class BackOfficeApplication {
 
 	public static final int BCRYPT_STRENGTH = 5;
 
-	@Bean()
+	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder(BCRYPT_STRENGTH);
-		//return NoOpPasswordEncoder.getInstance();
 	}
 
 	public static void main(String[] args) {
