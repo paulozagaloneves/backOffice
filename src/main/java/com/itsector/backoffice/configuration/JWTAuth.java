@@ -22,6 +22,7 @@ public class JWTAuth {
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authorization";
     private static final String CLAIMS_PRIVILEGES = "privileges";
+    public static final String ACCESS_CONTROL_EXPOSE_HEADERS = "Access-Control-Expose-Headers";
 
     static void addAuthentication(HttpServletResponse response, Authentication auth) {
         Date expiration = new Date(System.currentTimeMillis() + EXPIRATION_TIME);
@@ -40,6 +41,7 @@ public class JWTAuth {
                 .compact();
 
         response.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+        response.addHeader(ACCESS_CONTROL_EXPOSE_HEADERS,HEADER_STRING);
     }
 
     static Authentication getAuthentication(HttpServletRequest request) {
